@@ -2,7 +2,7 @@ const Order = require('./order');
 const OrderItem = require('./orderItem');
 const BoxType = require('./boxType');
 
-// Define relationships here
+
 Order.hasMany(OrderItem, { foreignKey: 'order_id', onDelete: 'CASCADE' });
 OrderItem.belongsTo(Order, { foreignKey: 'order_id' });
 

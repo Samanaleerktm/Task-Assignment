@@ -38,7 +38,7 @@ const PackageDetailsPage: React.FC = () => {
   ]);
   const [boxTypes, setBoxTypes] = useState<BoxType[]>([]);
 
-  // Fetch box types on component mount
+ 
   useEffect(() => {
     const loadBoxTypes = async () => {
       try {
@@ -52,7 +52,7 @@ const PackageDetailsPage: React.FC = () => {
     loadBoxTypes();
   }, []);
 
-  // Add new package item
+  
   const handleAddPackage = () => {
     setPackages([
       ...packages,
@@ -60,7 +60,7 @@ const PackageDetailsPage: React.FC = () => {
     ]);
   };
 
-  // Remove package item
+ 
   const handleRemovePackage = (index: number) => {
     setPackages(packages.filter((_, i) => i !== index));
   };
@@ -91,7 +91,6 @@ const PackageDetailsPage: React.FC = () => {
   // Handle form submission and API integration
   const handleNext = async () => {
     try {
-      // Prepare the JSON body for the API
       const orderData = {
         items: packages.map((pkg) => {
           const selectedBox = boxTypes.find((box) => box.name === pkg.type);
