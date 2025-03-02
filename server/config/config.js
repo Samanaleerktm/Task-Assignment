@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize");  // Ensure Sequelize is imported correctly
+const { Sequelize } = require("sequelize");  
 require("dotenv").config();
 
 // Define the configuration object
@@ -22,7 +22,7 @@ const sequelize = new Sequelize(
     host: config.development.host,
     dialect: config.development.dialect,
     port: config.development.port,
-    logging: false, // Optional: Set to true for logging SQL queries
+    logging: false, 
   }
 );
 

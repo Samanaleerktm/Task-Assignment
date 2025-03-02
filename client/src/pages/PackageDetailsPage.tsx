@@ -11,9 +11,9 @@ import {
   IconButton,
 } from "@mui/material";
 import { Remove } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { fetchBoxTypes } from "../apis/api"; 
-import {createOrder} from "../apis/orderapi";
+import { createOrder } from "../apis/orderapi";
 
 interface BoxType {
   id: number;
@@ -33,18 +33,24 @@ interface PackageItem {
 
 const PackageDetailsPage: React.FC = () => {
   const navigate = useNavigate();
-  const [packages, setPackages] = useState<PackageItem[]>([
-    { type: "", length: "", width: "", height: "", quantity: "" },
-  ]);
+  const location = useLocation();
+
+  // Initialize state from location (if coming back from summary)
+  const [packages, setPackages] = useState<PackageItem[]>(() => {
+    return location.state?.packages || [
+      { type: "", length: "", width: "", height: "", quantity: "" },
+    ];
+  });
+
   const [boxTypes, setBoxTypes] = useState<BoxType[]>([]);
 
- 
+  // Fetch box types on component mount
   useEffect(() => {
     const loadBoxTypes = async () => {
       try {
         const data = await fetchBoxTypes();
         console.log("Fetched box types:", data); 
-        setBoxTypes(data); 
+        setBoxTypes(data);
       } catch (error) {
         console.error("Failed to load box types", error);
       }
@@ -52,7 +58,7 @@ const PackageDetailsPage: React.FC = () => {
     loadBoxTypes();
   }, []);
 
-  
+  // Add new package item
   const handleAddPackage = () => {
     setPackages([
       ...packages,
@@ -60,7 +66,7 @@ const PackageDetailsPage: React.FC = () => {
     ]);
   };
 
- 
+  // Remove package item
   const handleRemovePackage = (index: number) => {
     setPackages(packages.filter((_, i) => i !== index));
   };
@@ -107,7 +113,6 @@ const PackageDetailsPage: React.FC = () => {
       // Call the createOrder API with the prepared data
       await createOrder(orderData);
 
-      // Navigate to the next page (Summary page)
       navigate("/summary", { state: { packages } });
     } catch (error) {
       console.error("Error creating order:", error);
@@ -121,7 +126,7 @@ const PackageDetailsPage: React.FC = () => {
 
         {packages.map((pkg, index) => {
           const selectedBox = boxTypes.find((box) => box.name === pkg.type);
-          const isFixedSize = pkg.type === "Box A" || pkg.type === "Box B"; 
+          const isFixedSize = selectedBox !== undefined; 
 
           return (
             <div
@@ -187,3 +192,4 @@ const PackageDetailsPage: React.FC = () => {
 };
 
 export default PackageDetailsPage;
+ 

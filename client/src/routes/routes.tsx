@@ -6,7 +6,7 @@ import PackageSummaryPage from "../pages/PackageSummaryPage";
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<PackageDetailsPage />} />  
+      <Route path="/details" element={<PackageDetailsPage />} />  
       <Route path="/summary" element={<PackageSummaryPage />} />
     </Routes>
   );
